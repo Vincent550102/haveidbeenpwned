@@ -19,7 +19,12 @@ export default {
   data() {
     return {
       idNumber: "",
-      leaks: [
+      leaks: [],
+    };
+  },
+  methods: {
+    async checkHash() {
+      this.leaks = [
         {
           name: "2023台灣個資外洩事件",
           columns: [
@@ -33,20 +38,6 @@ export default {
           ],
         }
       ]
-    };
-  },
-  methods: {
-    async checkHash() {
-      try {
-        const data = await api.get('/leak', {
-          params: {
-             id_number: this.idNumber,
-          }
-        })
-        console.log(data)
-      } catch (error) {
-        console.error(error)
-      }
     },
   },
   components: {
@@ -81,7 +72,7 @@ export default {
           Check
         </button>
       </div>
-      <div>
+      <div v-if="leaks.length">
         <h2 class="text-xl text-white font-bold">Leaked in datasets:</h2>
         <div v-for="leak in leaks" v-key="leak.name">
           <h2 class="text-xltext-white  font-bold">{{ leak.name }}</h2>
