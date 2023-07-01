@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios';
 import VividBackground from './components/VividBackground.vue'
 import { useI18n } from 'vue-i18n'
 
@@ -11,25 +10,12 @@ export default {
   data() {
     return {
       idNumber: "",
-      leaks: [],
+      leaks: null,
     };
   },
   methods: {
     checkHash() {
-      // this.leaks = [
-      //   {
-      //     name: "2023台灣個資外洩事件",
-      //     columns: [
-      //       "姓名",
-      //       "出生年月日",
-      //       "性別",
-      //       "身分證字號",
-      //       "戶籍地址",
-      //       "戶籍郵遞區號",
-      //       "通訊地址",
-      //     ],
-      //   }
-      // ]
+      this.leaks = null
       fetch(`http://ocrserver.vincent55.tw:8000/leak?id_number=${this.idNumber}`, { method: 'GET' })
         .then(response => response.json())
         .then(data => {
@@ -62,7 +48,7 @@ export default {
         <input placeholder="A123456789" v-model="idNumber"
           class="peer text-white h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-green-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" />
         <label
-          class="after:content[' '] pointer-events-none absolute left-0 -top-2.5 flex h-full w-full select-none text-sm font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-green-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-sm peer-focus:leading-tight peer-focus:text-green-500 peer-focus:after:scale-x-100 peer-focus:after:border-green-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+          class="text-white after:content[' '] pointer-events-none absolute left-0 -top-2.5 flex h-full w-full select-none text-sm font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-green-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-sm peer-focus:leading-tight peer-focus:text-green-500 peer-focus:after:scale-x-100 peer-focus:after:border-green-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
           {{ t("message.ID") }}
         </label>
       </div>
@@ -71,7 +57,8 @@ export default {
           {{ t("message.check") }}
         </button>
       </div>
-      <div>
+      <p v-if="!leaks"></p>
+      <div v-else-if="leaks.length > 0">
         <h2 class="text-xl text-white font-bold">{{ t("message.leaked_title") }}</h2>
         <div v-for="leak in leaks" v-key="leak.name">
           <h2 class="text-xltext-white text-white font-bold">{{ leak.name }}</h2>
@@ -82,6 +69,7 @@ export default {
           </ul>
         </div>
       </div>
+      <p class="text-white" v-else-if="leaks.length === 0">無資料外洩事件</p>
     </div>
   </div>
 </template>
