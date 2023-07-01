@@ -39,7 +39,9 @@ export default {
     async checkHash() {
       try {
         const data = await api.get('/leak', {
-          id_number: this.idNumber,
+          params: {
+             id_number: this.idNumber,
+          }
         })
         console.log(data)
       } catch (error) {
