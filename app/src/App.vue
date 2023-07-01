@@ -3,14 +3,6 @@ import axios from 'axios';
 import VividBackground from './components/VividBackground.vue'
 import { useI18n } from 'vue-i18n'
 
-const api = new axios.Axios({
-  baseURL: 'http://ocrserver.vincent55.tw:8000',
-  headers: {
-    'Content-Type': 'application/json',
-    'api-version': '1',
-  },
-})
-
 export default {
   setup() {
     const { t, locale } = useI18n({ useScope: 'global' })
@@ -23,21 +15,30 @@ export default {
     };
   },
   methods: {
-    async checkHash() {
-      this.leaks = [
-        {
-          name: "2023台灣個資外洩事件",
-          columns: [
-            "姓名",
-            "出生年月日",
-            "性別",
-            "身分證字號",
-            "戶籍地址",
-            "戶籍郵遞區號",
-            "通訊地址",
-          ],
-        }
-      ]
+    checkHash() {
+      // this.leaks = [
+      //   {
+      //     name: "2023台灣個資外洩事件",
+      //     columns: [
+      //       "姓名",
+      //       "出生年月日",
+      //       "性別",
+      //       "身分證字號",
+      //       "戶籍地址",
+      //       "戶籍郵遞區號",
+      //       "通訊地址",
+      //     ],
+      //   }
+      // ]
+      fetch(`http://ocrserver.vincent55.tw:8000/leak?id_number=${this.idNumber}`, { method: 'GET' })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          this.leaks = data.leaks
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     },
   },
   components: {
@@ -75,7 +76,7 @@ export default {
         <div v-for="leak in leaks" v-key="leak.name">
           <h2 class="text-xltext-white text-white font-bold">{{ leak.name }}</h2>
           <ul class="flex flex-wrap items-center justify-center mb-6 text-gray-900">
-            <li v-for="column in leak.columns" v-key="column" class="mr-4 text-white hover:underline md:mr-6">
+            <li v-for="column in leak.data" v-key="column" class="mr-4 text-white hover:underline md:mr-6">
               {{ t("column." + column, column) }}
             </li>
           </ul>
