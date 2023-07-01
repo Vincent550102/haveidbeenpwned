@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
 import VividBackground from './components/VividBackground.vue'
+import { useI18n } from 'vue-i18n'
 
 const api = new axios.Axios({
   baseURL: 'http://ocrserver.vincent55.tw:8000',
@@ -11,6 +12,10 @@ const api = new axios.Axios({
 })
 
 export default {
+  setup() {
+    const { t, locale } = useI18n({ useScope: 'global' })
+    return { t, locale }
+  },
   data() {
     return {
       idNumber: "",
@@ -50,9 +55,17 @@ export default {
 
 <template>
   <div class="relative w-screen h-screen">
+    <header>
+      <select v-model="locale">
+        <option value="zh-tw">中文</option>
+        <option value="en">English</option>
+      </select>
+    </header>
     <VividBackground class="w-full h-full" />
     <div class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <h1 class="text-3xl font-bold text-white">Have my ID been pwned?</h1>
+      <h1 class="text-3xl font-bold text-white">
+        {{ t("message.title") }}
+      </h1>
       <div class="relative mt-10 h-11 w-full min-w-[200px]">
         <input placeholder="A123456789" v-model="idNumber"
           class="peer text-white h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-green-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" />
