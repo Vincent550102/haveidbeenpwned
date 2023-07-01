@@ -7,7 +7,7 @@ import messages from './messages.json'
 const i18n = createI18n({
   legacy: false, // set `false` in order to use Composition API
   locale: 'zh-tw', // set locale
-  fallbackLocale: 'en', // set fallback locale
+  fallbackLocale: 'zh-tw', // set fallback locale
   messages, // set locale messages
 })
 

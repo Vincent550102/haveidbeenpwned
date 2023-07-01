@@ -1,12 +1,27 @@
 {
   "en": {
     "message": {
-      "title": "Have my ID been pwned?"
+      "title"       : "Have my ID been pwned?",
+      "ID"          : "ID number",
+      "check"       : "Check",
+      "leaked_title": "Leaked in datasets:"
+    },
+    "column": {
+      "姓名"         : "Name",
+      "出生年月日"   : "Brithdate",
+      "性別"         : "Gender",
+      "身分證字號"   : "ID number",
+      "戶籍地址"     : "Domicile address",
+      "戶籍郵遞區號" : "Account postal code",
+      "通訊地址"     : "Correspondence address"
     }
   },
   "zh-tw": {
     "message": {
-      "title": "你的資料外線了嗎？"
+      "title"       : "你的資料外洩了嗎？",
+      "ID"          : "身份證字號",
+      "check"       : "檢索",
+      "leaked_title": "在以下資安事件洩漏"
     }
   }
 }
