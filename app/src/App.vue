@@ -1,22 +1,51 @@
 <script>
-import { sha256 } from 'js-sha256';
+import axios from 'axios';
+
+const api = new axios.Axios({
+  baseURL: 'http://ocrserver.vincent55.tw:8000',
+  headers: {
+    'Content-Type': 'application/json',
+    'api-version': '1',
+  },
+})
+
 export default {
   data() {
     return {
       idNumber: "",
-      idHashed: "",
+      leaks: [
+        {
+          name: "2023台灣個資外洩事件",
+          columns: [
+            "姓名",
+            "出生年月日",
+            "性別",
+            "身分證字號",
+            "戶籍地址",
+            "戶籍郵遞區號",
+            "通訊地址",
+          ],
+        }
+      ]
     };
   },
   methods: {
-    checkHash() {
-      this.idHashed = sha256(this.idNumber);
+    async checkHash() {
+      try {
+        const data = await api.get('/leak', {
+          id_number: this.idNumber,
+        })
+        console.log(data)
+      } catch (error) {
+        console.error(error)
+      }
     },
   },
 };
 </script>
 
 <template>
-  <div class="container sm:mx-auto center mt-20">
+  <div class="container sm:mx-auto mt-20">
     <h1 class="text-3xl font-bold">Have my ID been pwned?</h1>
     <div class="flex w-72 flex-col gap-6 mt-10">
       <div class="relative h-11 w-full min-w-[200px]">
@@ -33,7 +62,15 @@ export default {
         </button>
       </div>
       <div>
-        <p>{{ idHashed }}</p>
+        <h2 class="text-xl font-bold">Leaked in datasets:</h2>
+        <div v-for="leak in leaks" v-key="leak.name">
+          <h2 class="text-xl font-bold">{{ leak.name }}</h2>
+          <ul class="flex flex-wrap items-center justify-center mb-6 text-gray-900">
+            <li v-for="column in leak.columns" v-key="column" class="mr-4 hover:underline md:mr-6">
+              {{ column }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
