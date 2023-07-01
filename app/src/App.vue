@@ -84,7 +84,7 @@ export default {
       <div>
         <h2 class="text-xl text-white font-bold">{{ t("message.leaked_title") }}</h2>
         <div v-for="leak in leaks" v-key="leak.name">
-          <h2 class="text-xltext-white  font-bold">{{ leak.name }}</h2>
+          <h2 class="text-xltext-white text-white font-bold">{{ leak.name }}</h2>
           <ul class="flex flex-wrap items-center justify-center mb-6 text-gray-900">
             <li v-for="column in leak.columns" v-key="column" class="mr-4 text-white hover:underline md:mr-6">
               {{ t("column." + column, column) }}
