@@ -57,14 +57,14 @@ export default {
 
 <template>
   <div class="relative w-screen h-screen">
-    <header>
-      <select v-model="locale">
-        <option value="zh-tw">中文</option>
-        <option value="en">English</option>
-      </select>
-    </header>
     <VividBackground class="w-full h-full" />
     <div class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <header class="float-right">
+        <select v-model="locale">
+          <option value="zh-tw">中文</option>
+          <option value="en">English</option>
+        </select>
+      </header>
       <h1 class="text-3xl font-bold text-white">
         {{ t("message.title") }}
       </h1>
